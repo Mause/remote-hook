@@ -3,6 +3,7 @@ import json
 import logging
 from typing import Optional
 
+import bcrypt
 import requests
 from redis import StrictRedis
 from dotenv import load_dotenv
@@ -15,6 +16,8 @@ logging.basicConfig(level=logging.DEBUG)
 app = Flask(__name__)
 
 REDIS_URL = os.environ["REDIS_URL"]
+LOGIN_REQUIRED = "", 401, {"WWW-Authenticate": 'Basic realm="Login Required"'}
+
 REDIS = StrictRedis.from_url(REDIS_URL)
 
 
@@ -23,9 +26,9 @@ def hook():
     service = request.json["service"]
     show = request.json["show"]
 
-    REDIS.publish("watch", json.dumps({'service': service, 'show': show}))
+    REDIS.publish("watch", json.dumps({"service": service, "show": show}))
 
-    return '', 200
+    return "", 200
 
 
 @app.route("/redis")
@@ -36,9 +39,9 @@ def redis():
 
     ok = all(
         [
-            auth["username"] == config["CONFIG_USERNAME"],
+            auth["username"] == os.environ["CONFIG_USERNAME"],
             bcrypt.checkpw(
-                auth["password"].encode(), config["CONFIG_PASSWORD"].encode()
+                auth["password"].encode(), os.environ["CONFIG_PASSWORD"].encode()
             ),
         ]
     )
@@ -46,4 +49,3 @@ def redis():
         return LOGIN_REQUIRED
 
     return jsonify({"redis_endpoint": REDIS_URL})
-

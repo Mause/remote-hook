@@ -1,4 +1,5 @@
 from main import app
+from base64 import b64encode
 import pytest
 
 
@@ -10,4 +11,18 @@ def client():
 
 
 def test_thing(client):
-    client.post("/hook", json={"service": "animelab", "show": "Black"})
+    response = client.post("/hook", json={"service": "animelab", "show": "Black"})
+
+    assert response.status == "200 OK"
+
+
+def test_redis(client):
+    response = client.get("/redis")
+
+    assert response.status == "401 UNAUTHORIZED"
+
+    response = client.get(
+        "/redis", headers={"Authorization": b"Basic " + b64encode(b"username:password")}
+    )
+
+    assert response.status == "200 OK"
