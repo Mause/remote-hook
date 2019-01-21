@@ -26,6 +26,8 @@ def hook():
     service = request.json["service"]
     show = request.json["show"]
 
+    print(request.json)
+
     REDIS.publish("watch", json.dumps({"service": service, "show": show}))
 
     return "", 200
