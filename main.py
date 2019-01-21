@@ -1,4 +1,5 @@
 import os
+import json
 import logging
 from typing import Optional
 
@@ -17,39 +18,14 @@ REDIS_URL = os.environ["REDIS_URL"]
 REDIS = StrictRedis.from_url(REDIS_URL)
 
 
-def autocomplete(text: str) -> Optional[str]:
-    result = requests.get(
-        "https://www.animelab.com/shows/autocomplete", params={"searchTerms": text}
-    ).json()
-
-    if result["suggestions"]:
-        return result["suggestions"][0]
-    else:
-        return None
-
-
-def send(data):
-    ps = redis.pubsub()
-
-    ps.publish("watch", json.dump())
-
-
-
-def animelab(show: str) -> None:
-    show = autocomplete(show)
-
-    raise Exception(show)
-
-
 @app.route("/hook", methods=["POST"])
 def hook():
     service = request.json["service"]
     show = request.json["show"]
 
-    if service == 'animelab':
-        animelab(show)
-    else:
-        raise Exception()
+    REDIS.publish("watch", json.dumps({'service': service, 'show': show}))
+
+    return '', 200
 
 
 @app.route("/redis")
