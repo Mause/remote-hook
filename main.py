@@ -21,6 +21,17 @@ LOGIN_REQUIRED = "", 401, {"WWW-Authenticate": 'Basic realm="Login Required"'}
 REDIS = StrictRedis.from_url(REDIS_URL)
 
 
+@app.route('/test', methods=['POST'])
+def test():
+    execute('plex', 'electromagnetic girlfriend')
+    return 'Tested', 200
+
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+
 @app.route("/hook", methods=["POST"])
 def hook():
     service = request.json["service"]
@@ -28,9 +39,13 @@ def hook():
 
     print(request.json)
 
-    REDIS.publish("watch", json.dumps({"service": service, "show": show}))
+    execute(service, show)
 
     return "", 200
+
+
+def execute(service, show):
+    REDIS.publish("watch", json.dumps({"service": service, "show": show}))
 
 
 @app.route("/redis")
@@ -51,3 +66,8 @@ def redis():
         return LOGIN_REQUIRED
 
     return jsonify({"redis_endpoint": REDIS_URL})
+
+
+if __name__ == '__main__':
+    app.run(debug=True, host='0.0.0.0')
+
