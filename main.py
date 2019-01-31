@@ -1,5 +1,6 @@
 import os
 import json
+import socket
 import logging
 from typing import Optional
 
@@ -22,6 +23,19 @@ REDIS = StrictRedis.from_url(REDIS_URL)
 REDIS.execute_command('client setname remotehook')
 
 
+def get_clients():
+    clients = REDIS.execute_command('client list').decode().splitlines()
+    return [
+        dict(
+            pair.split('=')
+            for pair in client.split()
+        )
+        for client in clients
+    ]
+
+
+def get_name(client):
+    return client['name'] or client['host'] or client['addr']
 
 
 @app.route('/')
@@ -30,7 +44,19 @@ def index():
         clients = execute('plex', 'electromagnetic girlfriend')
         return f'Tested: {{clients}}', 200
     else:
-        return render_template('index.html')
+        clients = get_clients()
+        for client in clients:
+            ip, _ = client['addr'].split(':')
+            try:
+                host = socket.gethostbyaddr(ip)
+            except socket.herror:
+                host = None
+            client['host'] = host
+        return render_template(
+            'index.html',
+            clients=clients,
+            get_name=get_name
+        )
 
 
 @app.route("/hook", methods=["POST"])
