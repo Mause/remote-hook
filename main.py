@@ -19,6 +19,7 @@ REDIS_URL = os.environ["REDIS_URL"]
 LOGIN_REQUIRED = "", 401, {"WWW-Authenticate": 'Basic realm="Login Required"'}
 
 REDIS = StrictRedis.from_url(REDIS_URL)
+REDIS.execute_command('client setname remotehook')
 
 
 
