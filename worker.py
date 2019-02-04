@@ -6,7 +6,7 @@ from main import REDIS
 
 
 def keepalive():
-    REDIS.publish("watch-keepalive")
+    REDIS.publish("watch-keepalive", 'thump-thump')
 
 
 def main():
