@@ -2,7 +2,7 @@ import os
 import json
 import socket
 import logging
-from typing import Optional
+from typing import Dict
 
 import bcrypt
 import requests
@@ -61,19 +61,20 @@ def index():
 
 @app.route("/hook", methods=["POST"])
 def hook():
-    service = request.json["service"]
-    show = request.json["show"]
+    rq = dict(request.json)
+    print(rq)
 
-    print(request.json)
+    action = rq.pop('action', 'watch')
 
-    clients = execute(service, show)
+    clients = execute(action, rq)
 
     return str(clients), 200
 
 
-def execute(service, show):
-    clients = REDIS.publish("watch", json.dumps({"service": service, "show": show}))
-    logging.info('playing "%s" on "%s" on %s clients', show, service, clients)
+def execute(action: str, message: Dict):
+    s_message = json.dumps(message)
+    clients = REDIS.publish(action, s_message)
+    logging.info('sending %s to %s clients', s_message, clients)
     return clients
 
 
