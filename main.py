@@ -18,7 +18,7 @@ logging.basicConfig(level=logging.DEBUG)
 
 app = Flask(__name__)
 
-CLOUD_AMQP = os.environ["CLOUD_AMQP"]
+CLOUD_AMQP = os.environ["CLOUDAMQP"]
 LOGIN_REQUIRED = "", 401, {"WWW-Authenticate": 'Basic realm="Login Required"'}
 
 
