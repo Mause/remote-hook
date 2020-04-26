@@ -38,7 +38,10 @@ def hook():
     action = message.pop('action')
 
     logging.info('sending %s to %s', message, action)
-    response = get_client(action).call(action, **message)
+    client = get_client(action)
+    logging.info('client: %s', client)
+    response = client.call(action, **message)
+    logging.info('response: %s', response)
 
     return repr(response), 200
 
