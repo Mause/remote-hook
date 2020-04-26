@@ -6,6 +6,7 @@ verify_ssl = true
 [dev-packages]
 pytest = "*"
 pudb = "*"
+isort = "*"
 
 [packages]
 flask = "*"
@@ -17,4 +18,4 @@ bcrypt = "*"
 schedule = "*"
 
 [requires]
-python_version = "3.7"
+python_version = "3.8"
