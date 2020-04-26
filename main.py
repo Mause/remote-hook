@@ -43,7 +43,7 @@ def hook():
     return repr(response), 200
 
 
-@app.route("/rabbitm")
+@app.route("/rabbitmq")
 def rabbitmq():
     auth = request.authorization
     if not auth:
