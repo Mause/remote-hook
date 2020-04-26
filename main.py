@@ -9,8 +9,8 @@ import bcrypt
 import requests
 from dotenv import load_dotenv
 from flask import Flask, jsonify, request
-
 from mause_rpc import client
+from pika.configuration import URLParameters
 
 load_dotenv()
 
@@ -18,7 +18,7 @@ logging.basicConfig(level=logging.DEBUG)
 
 app = Flask(__name__)
 
-CLOUD_AMQP = os.environ["CLOUDAMQP_URL"]
+CLOUD_AMQP = URLParameters(os.environ["CLOUDAMQP_URL"])
 LOGIN_REQUIRED = "", 401, {"WWW-Authenticate": 'Basic realm="Login Required"'}
 
 
