@@ -1,6 +1,8 @@
-from main import app
 from base64 import b64encode
+
 import pytest
+
+from main import app
 
 
 @pytest.fixture

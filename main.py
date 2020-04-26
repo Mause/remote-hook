@@ -1,15 +1,14 @@
-import os
 import json
-from functools import lru_cache
-import socket
 import logging
+import os
+import socket
+from functools import lru_cache
 from typing import Dict
 
 import bcrypt
 import requests
-from redis import StrictRedis
 from dotenv import load_dotenv
-from flask import request, jsonify, Flask
+from flask import Flask, jsonify, request
 
 from mause_rpc import client
 
