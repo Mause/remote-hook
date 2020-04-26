@@ -1,5 +1,6 @@
 import os
 import json
+from functools import lru_cache
 import socket
 import logging
 from typing import Dict
@@ -8,7 +9,9 @@ import bcrypt
 import requests
 from redis import StrictRedis
 from dotenv import load_dotenv
-from flask import request, render_template, redirect, url_for, jsonify, Flask, flash
+from flask import request, jsonify, Flask
+
+from mause_rpc import client
 
 load_dotenv()
 
@@ -16,47 +19,18 @@ logging.basicConfig(level=logging.DEBUG)
 
 app = Flask(__name__)
 
-REDIS_URL = os.environ["REDIS_URL"]
+CLOUD_AMQP = os.environ["CLOUD_AMQP"]
 LOGIN_REQUIRED = "", 401, {"WWW-Authenticate": 'Basic realm="Login Required"'}
 
-REDIS = StrictRedis.from_url(REDIS_URL)
-REDIS.execute_command('client setname remotehook')
 
-
-def get_clients():
-    clients = REDIS.execute_command('client list').decode().splitlines()
-    return [
-        dict(
-            pair.split('=')
-            for pair in client.split()
-        )
-        for client in clients
-    ]
-
-
-def get_name(client):
-    return client['name'] or client['host'] or client['addr']
+@lru_cache()
+def get_client(name:str):
+    return client.get_client(name, CLOUD_AMQP)
 
 
 @app.route('/')
 def index():
-    if request.method == 'POST':
-        clients = execute('plex', 'electromagnetic girlfriend')
-        return f'Tested: {{clients}}', 200
-    else:
-        clients = get_clients()
-        for client in clients:
-            ip, _ = client['addr'].split(':')
-            try:
-                host = socket.gethostbyaddr(ip)
-            except socket.herror:
-                host = None
-            client['host'] = host
-        return render_template(
-            'index.html',
-            clients=clients,
-            get_name=get_name
-        )
+    return 'Hi'
 
 
 @app.route("/hook", methods=["POST"])
@@ -66,20 +40,18 @@ def hook():
 
     action = rq.pop('action', 'watch')
 
-    clients = execute(action, rq)
+    response = execute(action, rq)
 
-    return str(clients), 200
+    return repr(response), 200
 
 
 def execute(action: str, message: Dict):
-    s_message = json.dumps(message)
-    clients = REDIS.publish(action, s_message)
-    logging.info('sending %s to %s clients', s_message, clients)
-    return clients
+    logging.info('sending %s to %s', message, action)
+    response = get_client(action).call(action, message)
 
 
-@app.route("/redis")
-def redis():
+@app.route("/rabbitm")
+def rabbitmq():
     auth = request.authorization
     if not auth:
         return LOGIN_REQUIRED
@@ -95,9 +67,8 @@ def redis():
     if not ok:
         return LOGIN_REQUIRED
 
-    return jsonify({"redis_endpoint": REDIS_URL})
+    return jsonify({"rabbitmq_endpoint": CLOUD_AMQP})
 
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
-
