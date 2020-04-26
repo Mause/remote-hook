@@ -35,19 +35,13 @@ def index():
 
 @app.route("/hook", methods=["POST"])
 def hook():
-    rq = dict(request.json)
-    print(rq)
+    message = dict(request.json)
+    action = message.pop('action')
 
-    action = rq.pop('action', 'watch')
-
-    response = execute(action, rq)
-
-    return repr(response), 200
-
-
-def execute(action: str, message: Dict):
     logging.info('sending %s to %s', message, action)
     response = get_client(action).call(action, message)
+
+    return repr(response), 200
 
 
 @app.route("/rabbitm")
