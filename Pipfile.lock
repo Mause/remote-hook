@@ -269,10 +269,10 @@
         },
         "pudb": {
             "hashes": [
-                "sha256:8d8b974641b7a7a2a721af01c9dce5eac8e05a2ceebc2680725ba8eef1ca876e"
+                "sha256:e8f0ea01b134d802872184b05bffc82af29a1eb2f9374a277434b932d68f58dc"
             ],
             "index": "pypi",
-            "version": "==2018.1"
+            "version": "==2019.2"
         },
         "py": {
             "hashes": [
