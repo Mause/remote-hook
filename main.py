@@ -18,13 +18,13 @@ logging.basicConfig(level=logging.DEBUG)
 
 app = Flask(__name__)
 
-CLOUD_AMQP = URLParameters(os.environ["CLOUDAMQP_URL"])
+CLOUD_AMQP = os.environ["CLOUDAMQP_URL"]
 LOGIN_REQUIRED = "", 401, {"WWW-Authenticate": 'Basic realm="Login Required"'}
 
 
 @lru_cache()
 def get_client(name:str):
-    return client.get_client(name, CLOUD_AMQP)
+    return client.get_client(name, URLParameters(CLOUD_AMQP))
 
 
 @app.route('/')
