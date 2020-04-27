@@ -2,6 +2,7 @@ import json
 import logging
 import os
 import socket
+import time
 from functools import lru_cache
 from typing import Dict
 
@@ -24,7 +25,12 @@ LOGIN_REQUIRED = "", 401, {"WWW-Authenticate": 'Basic realm="Login Required"'}
 
 @lru_cache()
 def get_client(name:str):
-    return client.get_client(name, URLParameters(CLOUD_AMQP))
+    cl = client.get_client(name, URLParameters(CLOUD_AMQP))
+    if not cl._thread.is_alive():
+        logging.debug('waiting for client thread to live')
+        time.sleep(5)
+        assert cl._thread.is_alive(), 'Client thread dead'
+    return cl
 
 
 @app.route('/')
