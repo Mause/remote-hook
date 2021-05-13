@@ -15,6 +15,7 @@ requests = "*"
 python-dotenv = "*"
 bcrypt = "*"
 schedule = "*"
+mause-rpc = "*"
 
 [requires]
 python_version = "3.9"
