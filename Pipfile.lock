@@ -162,11 +162,10 @@
         },
         "jinja2": {
             "hashes": [
-                "sha256:03e47ad063331dd6a3f04a43eddca8a966a26ba0c5b7207a9a9e4e08f1b29419",
-                "sha256:a6d58433de0ae800347cab1fa3043cebbabe8baa9d29e668f1c768cb87a333c6"
+                "sha256:1f06f2da51e7b56b8f238affdd6b4e2c61e39598a378cc49345bc1bd42a978a4",
+                "sha256:703f484b47a6af502e743c9122595cc812b0271f661722403114f71a79d0f5a4"
             ],
-            "index": "pypi",
-            "version": "==2.11.3"
+            "version": "==3.0.1"
         },
         "markupsafe": {
             "hashes": [
@@ -209,11 +208,11 @@
         },
         "mause-rpc": {
             "hashes": [
-                "sha256:5ae75dc93628de29e3a25fbdeceea99de5910b77681fa79767b0268fb2a69e1a",
-                "sha256:b00b79c9b6c1b8db0be9b724e6647a99eeddaa41c66a003832f21f10a28cd6ca"
+                "sha256:35f8769795fc71f833fd08914381e92b38eaff482a0e9a38f9f5e165d2d6fc15",
+                "sha256:75243bd6a21734ee75baa83a83395abab303293eb0661066d401566f91c82fdf"
             ],
             "index": "pypi",
-            "version": "==0.0.12"
+            "version": "==0.0.19"
         },
         "pika": {
             "hashes": [
