@@ -45,7 +45,10 @@ def hook():
     logging.info('sending %s to %s', message, action)
     client = get_client(action)
     logging.info('client: %s', client)
-    response = client.call(action, **message)
+    try:
+        response = client.call(action, **message)
+    except TimeoutError as e:
+        return jsonify(error='Timeout waiting for rpc response')
     logging.info('response: %s', response)
 
     return repr(response), 200
