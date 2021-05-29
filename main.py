@@ -1,6 +1,7 @@
 import logging
 import os
 import time
+from concurrent.futures import TimeoutError as FutureTimeoutError
 from functools import lru_cache
 
 import bcrypt
@@ -48,7 +49,7 @@ def hook():
     logging.info('client: %s', client)
     try:
         response = client.call(action, **message)
-    except TimeoutError as e:
+    except FutureTimeoutError as e:
         return jsonify(error='Timeout waiting for rpc response')
     logging.info('response: %s', response)
 
