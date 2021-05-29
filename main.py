@@ -23,6 +23,7 @@ LOGIN_REQUIRED = "", 401, {"WWW-Authenticate": 'Basic realm="Login Required"'}
 @lru_cache()
 def get_client(name: str):
     cl = client.get_client(name, URLParameters(CLOUD_AMQP))
+    assert cl._thread
     if not cl._thread.is_alive():
         logging.debug('waiting for client thread to live')
         time.sleep(5)
