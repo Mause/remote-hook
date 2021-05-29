@@ -9,7 +9,6 @@ from dotenv import load_dotenv
 from flask import Flask, jsonify, request
 from mause_rpc import client
 from pika.connection import URLParameters
-from pydantic import BaseModel
 
 load_dotenv()
 
