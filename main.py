@@ -9,6 +9,7 @@ from dotenv import load_dotenv
 from flask import Flask, jsonify, request
 from mause_rpc import client
 from pika.connection import URLParameters
+from pydantic import BaseModel
 
 load_dotenv()
 
@@ -38,7 +39,9 @@ def index():
 @app.route("/hook", methods=["POST"])
 def hook():
     message = dict(request.json)
-    action = message.pop('action')
+    action = message.pop('action', None)
+    if not action:
+        return jsonify(error='Malformed payload')
 
     logging.info('sending %s to %s', message, action)
     client = get_client(action)
