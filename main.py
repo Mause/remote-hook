@@ -38,7 +38,7 @@ def index():
 
 @app.route("/hook", methods=["POST"])
 def hook():
-    message = dict(request.json)
+    message = dict(request.json or {})
     action = message.pop('action', None)
     if not action:
         return jsonify(error='Malformed payload')
