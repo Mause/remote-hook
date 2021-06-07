@@ -13,7 +13,7 @@ Welcome to Remote Hook 👋
 
 > Remote Hook
 ### 🏠 [Homepage](https://github.com/Mause/remote-hook#readme)
-### ✨ [Demo](https://github.com/Mause/remote-hook#readme)
+
 ## Install
 ```sh
 pip3 install git+https://github.com/Mause/remote-hook#egg=remote-hook
