@@ -322,10 +322,10 @@
         },
         "identify": {
             "hashes": [
-                "sha256:3a8493cf49cfe4b28d50865e38f942c11be07a7b0aab8e715073e17f145caacc",
-                "sha256:96c57d493184daecc7299acdeef0ad7771c18a59931ea927942df393688fe849"
+                "sha256:18d0c531ee3dbc112fa6181f34faa179de3f57ea57ae2899754f16a7e0ff6421",
+                "sha256:5b41f71471bc738e7b586308c3fca172f78940195cb3bf6734c1e66fdac49306"
             ],
-            "version": "==2.2.9"
+            "version": "==2.2.10"
         },
         "iniconfig": {
             "hashes": [
@@ -342,6 +342,13 @@
             "index": "pypi",
             "version": "==5.8.0"
         },
+        "jedi": {
+            "hashes": [
+                "sha256:18456d83f65f400ab0c2d3319e48520420ef43b23a086fdc05dff34132f0fb93",
+                "sha256:92550a404bad8afed881a137ec9a461fed49eca661414be45059329614ed0707"
+            ],
+            "version": "==0.18.0"
+        },
         "nodeenv": {
             "hashes": [
                 "sha256:3ef13ff90291ba2a4a7a4ff9a979b63ffdd00a464dbe04acf0ea6471517a4c2b",
@@ -355,6 +362,13 @@
                 "sha256:67714da7f7bc052e064859c05c595155bd1ee9f69f76557e21f051443c20947a"
             ],
             "version": "==20.9"
+        },
+        "parso": {
+            "hashes": [
+                "sha256:12b83492c6239ce32ff5eed6d3639d6a536170723c6f3f1506869f1ace413398",
+                "sha256:a8c4922db71e4fdb90e0d0bc6e50f9b273d3397925e5e60a717e719201778d22"
+            ],
+            "version": "==0.8.2"
         },
         "pluggy": {
             "hashes": [
@@ -373,10 +387,10 @@
         },
         "pudb": {
             "hashes": [
-                "sha256:e8f0ea01b134d802872184b05bffc82af29a1eb2f9374a277434b932d68f58dc"
+                "sha256:309ee82b45a0ffca0bc4c7f521fd3e357589c764f339bdf9dcabb7ad40692d6e"
             ],
             "index": "pypi",
-            "version": "==2019.2"
+            "version": "==2021.1"
         },
         "py": {
             "hashes": [
