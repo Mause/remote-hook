@@ -2,7 +2,7 @@
 skip_string_normalization = true
 
 [tool.mypy]
-ignore_missing_imports = "True"
+ignore_missing_imports = true
 disallow_untyped_calls = true
 disallow_untyped_defs = true
 disallow_incomplete_defs = true
