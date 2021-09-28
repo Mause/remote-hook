@@ -8,6 +8,7 @@ pytest = "*"
 pudb = "*"
 isort = "*"
 pre-commit = "*"
+types-requests = "*"
 
 [packages]
 flask = "*"

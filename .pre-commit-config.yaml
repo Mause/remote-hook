@@ -40,3 +40,4 @@ repos:
       - id: mypy
         additional_dependencies:
           - "mause-rpc==0.0.19"
+          - "types-requests==2.25.9"
