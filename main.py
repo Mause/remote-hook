@@ -3,11 +3,12 @@ import os
 import time
 from concurrent.futures import TimeoutError as FutureTimeoutError
 from functools import lru_cache
+from typing import Any, Union
 
 import bcrypt
 import requests
 from dotenv import load_dotenv
-from flask import Flask, jsonify, request
+from flask import Flask, Response, jsonify, request
 from mause_rpc import client
 from pika.connection import URLParameters
 
@@ -22,7 +23,7 @@ LOGIN_REQUIRED = "", 401, {"WWW-Authenticate": 'Basic realm="Login Required"'}
 
 
 @lru_cache()
-def get_client(name: str):
+def get_client(name: str) -> client.Client:
     cl = client.get_client(name, URLParameters(CLOUD_AMQP))
     assert cl._thread
     if not cl._thread.is_alive():
@@ -32,13 +33,13 @@ def get_client(name: str):
     return cl
 
 
-@app.route('/')
-def index():
+@app.route('/')  # type: ignore
+def index() -> str:
     return 'Hi'
 
 
-@app.route("/hook", methods=["POST"])
-def hook():
+@app.route("/hook", methods=["POST"])  # type: ignore
+def hook() -> Union[tuple[str, int], Response]:
     message = dict(request.json or {})
     action = message.pop('action', None)
     if not action:
@@ -48,7 +49,7 @@ def hook():
     client = get_client(action)
     logging.info('client: %s', client)
     try:
-        response = client.call(action, **message)
+        response: Any = client.call(action, **message)  # type: ignore
     except FutureTimeoutError as e:
         return jsonify(error='Timeout waiting for rpc response')
     logging.info('response: %s', response)
@@ -56,8 +57,8 @@ def hook():
     return repr(response), 200
 
 
-@app.route("/rabbitmq")
-def rabbitmq():
+@app.route("/rabbitmq")  # type: ignore
+def rabbitmq() -> Union[tuple[str, int, dict[str, str]], Response]:
     auth = request.authorization
     if not auth:
         return LOGIN_REQUIRED
