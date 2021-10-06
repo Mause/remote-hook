@@ -22,7 +22,7 @@ CLOUD_AMQP = os.environ["CLOUDAMQP_URL"]
 LOGIN_REQUIRED = "", 401, {"WWW-Authenticate": 'Basic realm="Login Required"'}
 
 
-@lru_cache()
+@lru_cache
 def get_client(name: str) -> client.Client:
     cl = client.get_client(name, URLParameters(CLOUD_AMQP))
     assert cl._thread
@@ -39,7 +39,7 @@ def index() -> str:
 
 
 @app.route("/hook", methods=["POST"])  # type: ignore
-def hook() -> Union[tuple[str, int], Response]:
+def hook() -> tuple[str, int] | Response:
     message = dict(request.json or {})
     action = message.pop('action', None)
     if not action:
@@ -58,7 +58,7 @@ def hook() -> Union[tuple[str, int], Response]:
 
 
 @app.route("/rabbitmq")  # type: ignore
-def rabbitmq() -> Union[tuple[str, int, dict[str, str]], Response]:
+def rabbitmq() -> tuple[str, int, dict[str, str]] | Response:
     auth = request.authorization
     if not auth:
         return LOGIN_REQUIRED
